@@ -7,6 +7,5 @@ public final class Config {
         public static final String DB_USER = "estela";
         public static final String DB_PASSWORD = "smd123";
 
-        private Config() {
-        }
+        private Config() { }
 }
