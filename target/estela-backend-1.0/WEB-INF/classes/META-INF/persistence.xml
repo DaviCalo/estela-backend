@@ -3,6 +3,6 @@
   <!-- Define Persistence Unit -->
   <persistence-unit name="my_persistence_unit">
     <class>dev.smd.estela.backend.service.AuthService</class>
-    <class>dev.smd.estela.backend.model.User</class>
+    <class>dev.smd.estela.backend.dao.Entity.User</class>
   </persistence-unit>
 </persistence>

@@ -1,14 +1,14 @@
 package dev.smd.estela.backend.service;
 
-import dev.smd.estela.backend.dto.UserDAO;
-import dev.smd.estela.backend.model.User;
+import dev.smd.estela.backend.dao.UserDAO;
+import dev.smd.estela.backend.entity.User;
 import java.util.Optional;
 
 public class AuthService {
 
         UserDAO userDto = new UserDAO();
 
-        public Optional<User> authenticate(String username, String password) {
+        public Optional<User> authenticate(String username, String password) {;
                 User user = userDto.login(username, password);
 
                 if (user != null && user.getPassword().equals(password)) {
@@ -16,11 +16,11 @@ public class AuthService {
                 }
                 return Optional.empty();
         }
-
+        
         public Optional<User> register(String username, String password, String name, String nickName) {
-                if (userDto.findByUsername(username) != null) {
+                /*if (userDto.findByUsername(username) != null) {
                         return Optional.empty();
-                }
+                }*/
 
                 User newUser = new User();
                 newUser.setUsername(username);

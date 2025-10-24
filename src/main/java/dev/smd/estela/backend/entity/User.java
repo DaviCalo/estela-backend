@@ -1,4 +1,4 @@
-package dev.smd.estela.backend.model;
+package dev.smd.estela.backend.entity;
 
 import java.io.Serializable;
 

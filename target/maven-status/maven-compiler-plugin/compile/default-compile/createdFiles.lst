@@ -1,10 +1,11 @@
 dev\smd\estela\backend\config\Config.class
 dev\smd\estela\backend\servlet\Login.class
-dev\smd\estela\backend\dto\UserDAO.class
 dev\smd\estela\backend\resources\JakartaEE10Resource.class
+dev\smd\estela\backend\dto\LoginCredentialsDTO.class
 dev\smd\estela\backend\servlet\Register.class
 dev\smd\estela\backend\service\AuthService.class
 dev\smd\estela\backend\servlet\Teste.class
-dev\smd\estela\backend\model\LoginCredentials.class
+dev\smd\estela\backend\dao\UserDAO.class
+dev\smd\estela\backend\entity\User.class
 dev\smd\estela\backend\JakartaRestConfiguration.class
-dev\smd\estela\backend\model\User.class
+dev\smd\estela\backend\dto\NewUserDTO.class

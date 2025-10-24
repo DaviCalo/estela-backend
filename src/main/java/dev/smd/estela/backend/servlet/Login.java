@@ -3,8 +3,8 @@ package dev.smd.estela.backend.servlet;
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
-import dev.smd.estela.backend.model.LoginCredentials;
-import dev.smd.estela.backend.model.User;
+import dev.smd.estela.backend.dto.LoginCredentialsDTO;
+import dev.smd.estela.backend.entity.User;
 import dev.smd.estela.backend.service.AuthService;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -23,23 +23,20 @@ public class Login extends HttpServlet {
 
         @Override
         protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+                 response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                
                 PrintWriter out = response.getWriter();
 
-                // 1. Tenta fazer o parsing do JSON diretamente a partir do leitor
-                LoginCredentials credentials;
+                LoginCredentialsDTO credentials;
                 try {
-                        // Gson lê o corpo da requisição (request.getReader()) e converte
-                        // para o objeto LoginCredentials.
-                        credentials = gson.fromJson(request.getReader(), LoginCredentials.class);
-
+                        credentials = gson.fromJson(request.getReader(), LoginCredentialsDTO.class);
                         if (credentials == null) {
-                                // Caso o corpo da requisição esteja vazio ou não seja um JSON válido.
                                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                                 out.print("{\"error\": \"Corpo da requisição ausente ou JSON inválido.\"}");
                                 return;
                         }
                 } catch (JsonIOException | JsonSyntaxException | IOException e) {
-                        // Captura erros de parsing (ex: JSON mal formatado)
                         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                         out.print("{\"error\": \"JSON mal formatado: " + e.getMessage() + "\"}");
                         return;

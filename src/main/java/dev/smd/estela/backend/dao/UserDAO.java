@@ -1,10 +1,10 @@
-package dev.smd.estela.backend.dto;
+package dev.smd.estela.backend.dao;
 
 import static dev.smd.estela.backend.config.Config.DB_DRIVER;
 import static dev.smd.estela.backend.config.Config.DB_PASSWORD;
 import static dev.smd.estela.backend.config.Config.DB_URL;
 import static dev.smd.estela.backend.config.Config.DB_USER;
-import dev.smd.estela.backend.model.User;
+import dev.smd.estela.backend.entity.User;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -72,7 +72,7 @@ public class UserDAO {
                               connection.close();
                     } catch (ClassNotFoundException | SQLException ex) {
                               System.out.println(ex.getMessage());
-                              return false;
+                              return isSuccess;
                     }
                     return isSuccess;
           }
@@ -146,7 +146,7 @@ public class UserDAO {
                     try {
                               Class.forName(DB_DRIVER);
                               Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-                              PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM games WHERE email = ?");
+                              PreparedStatement preparedStatement = connection.prepareStatement("SELECT user_id FROM users WHERE email = ?");
                               preparedStatement.setString(1, username);
                               ResultSet resultSet = preparedStatement.executeQuery();
                               while (resultSet.next()) {

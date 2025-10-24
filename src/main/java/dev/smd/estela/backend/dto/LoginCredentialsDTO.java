@@ -1,11 +1,11 @@
-package dev.smd.estela.backend.model;
+package dev.smd.estela.backend.dto;
 
-public class LoginCredentials {
+public class LoginCredentialsDTO {
 
         private String username;
         private String password;
 
-        public LoginCredentials() {
+        public LoginCredentialsDTO() {
         }
 
         public String getUsername() {
