@@ -4,6 +4,7 @@ dev\smd\estela\backend\resources\JakartaEE10Resource.class
 dev\smd\estela\backend\dto\LoginCredentialsDTO.class
 dev\smd\estela\backend\model\CategoryGame.class
 dev\smd\estela\backend\servlet\Register.class
+dev\smd\estela\backend\filter\SimpleCorsFilter.class
 dev\smd\estela\backend\model\SaleGame.class
 dev\smd\estela\backend\service\AuthService.class
 dev\smd\estela\backend\dao\UserDAO.class
