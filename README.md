@@ -32,7 +32,7 @@ Utilizamos o PostgreSQL para persistir os dados. A criação do esquema e das ta
 
 O script para inicializar o banco de dados (criação de tabelas, índices, etc.) está localizado na seguinte pasta:
 
-  * **Localização:** `src/main/resources/scriptssql/`
+  * **Localização:** `scriptssql/`
 
 > **Passo Essencial:** Antes de executar a aplicação, você deve executar o(s) script(s) SQL nesta pasta para garantir que o banco de dados esteja pronto.
 
