@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 import dev.smd.estela.backend.dto.LoginCredentialsDTO;
-import dev.smd.estela.backend.entity.User;
+import dev.smd.estela.backend.model.User;
 import dev.smd.estela.backend.service.AuthService;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -60,7 +60,7 @@ public class Login extends HttpServlet {
                         response.setStatus(HttpServletResponse.SC_OK);
                         String jsonResponse = String.format(
                                   "{\"status\": \"success\", \"message\": \"Login bem-sucedido!\", \"username\": \"%s\", \"role\": \"%b\"}",
-                                  user.getUsername(), user.isAdministrator()
+                                  user.getEmail(), user.getAdministrator()
                         );
                         out.print(jsonResponse);
 

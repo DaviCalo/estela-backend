@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 import dev.smd.estela.backend.dto.NewUserDTO;
-import dev.smd.estela.backend.entity.User;
+import dev.smd.estela.backend.model.User;
 import dev.smd.estela.backend.service.AuthService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -59,7 +59,7 @@ public class Register extends HttpServlet {
 
                         String jsonResponse = String.format(
                                   "{\"status\": \"success\", \"message\": \"Cadastro bem-sucedido!\", \"username\": \"%s\", \"role\": \"%b\"}",
-                                  user.getUsername(), user.isAdministrator()
+                                  user.getEmail(), user.getAdministrator()
                         );
                         out.print(jsonResponse);
 

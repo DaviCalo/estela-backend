@@ -1,7 +1,7 @@
 package dev.smd.estela.backend.service;
 
 import dev.smd.estela.backend.dao.UserDAO;
-import dev.smd.estela.backend.entity.User;
+import dev.smd.estela.backend.model.User;
 import java.util.Optional;
 
 public class AuthService {
@@ -23,7 +23,7 @@ public class AuthService {
                 }*/
 
                 User newUser = new User();
-                newUser.setUsername(username);
+                newUser.setEmail(username);
                 newUser.setPassword(password);
                 newUser.setAdministrator(false);
                 newUser.setName(name);
@@ -35,7 +35,7 @@ public class AuthService {
                         return Optional.empty();
                 }
 
-                newUser.setId(userDto.findByUsername(username).getId());
+                newUser.setUserId(userDto.findByUsername(username).getUserId());
 
                 return Optional.of(newUser);
         }

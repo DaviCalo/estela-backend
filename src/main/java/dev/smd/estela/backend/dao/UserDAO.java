@@ -4,7 +4,7 @@ import static dev.smd.estela.backend.config.Config.DB_DRIVER;
 import static dev.smd.estela.backend.config.Config.DB_PASSWORD;
 import static dev.smd.estela.backend.config.Config.DB_URL;
 import static dev.smd.estela.backend.config.Config.DB_USER;
-import dev.smd.estela.backend.entity.User;
+import dev.smd.estela.backend.model.User;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -62,9 +62,9 @@ public class UserDAO {
                               Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
                               PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO users (name, email, password, administrator, nickname) VALUES (?, ?, ?, ?, ?)");
                               preparedStatement.setString(1, newUser.getName());
-                              preparedStatement.setString(2, newUser.getUsername());
+                              preparedStatement.setString(2, newUser.getEmail());
                               preparedStatement.setString(3, newUser.getPassword());
-                              preparedStatement.setBoolean(4, newUser.isAdministrator());
+                              preparedStatement.setBoolean(4, newUser.getAdministrator());
                               preparedStatement.setString(5, newUser.getNickname());
 
                               isSuccess = (preparedStatement.executeUpdate() == 1);
@@ -84,9 +84,9 @@ public class UserDAO {
                               Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
                               PreparedStatement preparedStatement = connection.prepareStatement("UPDATE games SET price = ?, name = ?, characteristics = ?, description = ?, hard_drive_space = ?, graphics_card = ?, memory = ?, operating_system = ?, processor = ? WHERE game_id = ?");
                               preparedStatement.setString(1, newUser.getName());
-                              preparedStatement.setString(2, newUser.getUsername());
+                              preparedStatement.setString(2, newUser.getEmail());
                               preparedStatement.setString(3, newUser.getPassword());
-                              preparedStatement.setBoolean(4, newUser.isAdministrator());
+                              preparedStatement.setBoolean(4, newUser.getAdministrator());
                               preparedStatement.setString(5, newUser.getNickname());
                               isSuccess = (preparedStatement.executeUpdate() == 1);
                               preparedStatement.close();
@@ -126,9 +126,9 @@ public class UserDAO {
                               ResultSet resultSet = preparedStatement.executeQuery();
                               while (resultSet.next()) {
                                         user = new User();
-                                        user.setUsername(resultSet.getString("email"));
+                                        user.setEmail(resultSet.getString("email"));
                                         user.setPassword(resultSet.getString("password"));
-                                        user.setId(resultSet.getInt("user_id"));
+                                        user.setUserId(resultSet.getLong("user_id"));
                               }
                               resultSet.close();
                               preparedStatement.close();
@@ -151,7 +151,7 @@ public class UserDAO {
                               ResultSet resultSet = preparedStatement.executeQuery();
                               while (resultSet.next()) {
                                         user = new User();
-                                        user.setId(resultSet.getLong("user_id"));
+                                        user.setUserId(resultSet.getLong("user_id"));
                               }
                               resultSet.close();
                               preparedStatement.close();
