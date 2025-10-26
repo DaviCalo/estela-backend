@@ -10,6 +10,8 @@ dev\smd\estela\backend\service\AuthService.class
 dev\smd\estela\backend\dao\UserDAO.class
 dev\smd\estela\backend\model\Sale.class
 dev\smd\estela\backend\config\Config.class
+dev\smd\estela\backend\servlet\ProfilePhoto.class
+dev\smd\estela\backend\service\UserService.class
 dev\smd\estela\backend\model\Category.class
 dev\smd\estela\backend\model\Media.class
 dev\smd\estela\backend\servlet\Teste.class

@@ -10,17 +10,19 @@ public class User implements Serializable {
         private String password;
         private Boolean administrator;
         private String nickname;
+        private String fileName;
 
         public User() {
         }
 
-        public User(Long userId, String name, String email, String password, Boolean administrator, String nickname) {
+        public User(Long userId, String name, String email, String password, Boolean administrator, String nickname, String fileName) {
             this.userId = userId;
             this.name = name;
             this.email = email;
             this.password = password;
             this.administrator = administrator;
             this.nickname = nickname;
+            this.fileName = fileName;
         }
 
         public Long getUserId() {
@@ -69,5 +71,13 @@ public class User implements Serializable {
 
         public void setNickname(String nickname) {
             this.nickname = nickname;
+        }
+
+        public String getFileName() {
+                return fileName;
+        }
+
+        public void setFileName(String fileName) {
+                this.fileName = fileName;
         }
 }

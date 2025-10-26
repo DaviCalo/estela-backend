@@ -171,7 +171,8 @@ CREATE TABLE public.users (
     email character varying(255) NOT NULL,
     password character varying(255) NOT NULL,
     administrator boolean DEFAULT false,
-    nickname character varying(255) NOT NULL
+    nickname character varying(255) NOT NULL,
+    file_name character varying(255) NOT NULL DEFAULT 'default.png'
 );
 
 
