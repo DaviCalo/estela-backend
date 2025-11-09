@@ -8,8 +8,8 @@ public class AuthService {
 
         UserDAO userDto = new UserDAO();
 
-        public Optional<User> authenticate(String username, String password) {;
-                User user = userDto.login(username, password);
+        public Optional<User> authenticate(String email, String password) {;
+                User user = userDto.login(email, password);
 
                 if (user != null && user.getPassword().equals(password)) {
                         return Optional.of(user);

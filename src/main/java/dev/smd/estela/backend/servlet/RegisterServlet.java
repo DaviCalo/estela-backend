@@ -1,0 +1,77 @@
+package dev.smd.estela.backend.servlet;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonIOException;
+import com.google.gson.JsonSyntaxException;
+import dev.smd.estela.backend.dto.NewUserDTO;
+import dev.smd.estela.backend.model.User;
+import dev.smd.estela.backend.service.AuthService;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Optional;
+
+@WebServlet(name = "register", urlPatterns = {"/api/register"})
+public class RegisterServlet extends HttpServlet {
+
+        private final AuthService authService = new AuthService();
+        private final Gson gson = new Gson();
+
+        @Override
+        protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                PrintWriter out = response.getWriter();
+
+                NewUserDTO newUserDTO;
+                try {
+                        newUserDTO = gson.fromJson(request.getReader(), NewUserDTO.class);
+                        if (newUserDTO == null) {
+                                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                                out.print("{\"error\": \"Corpo da requisição ausente ou JSON inválido.\"}");
+                                return;
+                        }
+                } catch (JsonIOException | JsonSyntaxException | IOException e) {
+                        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                        out.print("{\"error\": \"JSON mal formatado: " + e.getMessage() + "\"}");
+                        return;
+                }
+
+                String username = newUserDTO.getEmail();
+                String password = newUserDTO.getPassword();
+                String name = newUserDTO.getName();
+                String nickName = newUserDTO.getNickName();
+
+                if (username == null || password == null || username.trim().isEmpty() || password.trim().isEmpty()) {
+                        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                        out.print("{\"error\": \"Nome de usuário e senha são obrigatórios para o cadastro.\"}");
+                        return;
+                }
+
+                Optional<User> newUser = authService.register(username, password, name, nickName);
+
+                if (newUser.isPresent()) {
+                        User user = newUser.get();
+                        HttpSession sessao = request.getSession(true);
+                        sessao.setMaxInactiveInterval(30 * 600);
+                        User authenticatedUser = newUser.get();
+                        sessao.setAttribute("user", authenticatedUser);
+                        response.setStatus(HttpServletResponse.SC_CREATED);
+                        String jsonResponse = String.format(
+                                  "{\"status\": \"success\", \"user\": {\"username\": \"%s\", \"role\": \"%b\", \"userid\": %d}}",
+                                  user.getEmail(),
+                                  user.getAdministrator(),
+                                  user.getUserId()
+                        );
+                        out.print(jsonResponse);
+                } else {
+                        response.setStatus(HttpServletResponse.SC_CONFLICT);
+                        out.print("{\"status\": \"error\", \"message\": \"Falha no cadastro. O nome de usuário pode já estar em uso.\"}");
+                }
+        }
+}

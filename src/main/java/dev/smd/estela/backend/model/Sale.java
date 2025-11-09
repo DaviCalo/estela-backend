@@ -5,17 +5,17 @@
 package dev.smd.estela.backend.model;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+ import java.sql.Timestamp;
 
 public class Sale implements Serializable {
         private Long saleId;
-        private LocalDateTime dataSale;
+        private Timestamp dataSale;
         private Long userId;
 
         public Sale() {
         }
 
-        public Sale(Long saleId, LocalDateTime dataSale, Long userId) {
+        public Sale(Long saleId, Timestamp dataSale, Long userId) {
             this.saleId = saleId;
             this.dataSale = dataSale;
             this.userId = userId;
@@ -29,11 +29,11 @@ public class Sale implements Serializable {
             this.saleId = saleId;
         }
 
-        public LocalDateTime getDataSale() {
+        public Timestamp getDataSale() {
             return dataSale;
         }
 
-        public void setDataSale(LocalDateTime dataSale) {
+        public void setDataSale(Timestamp dataSale) {
             this.dataSale = dataSale;
         }
 

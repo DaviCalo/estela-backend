@@ -2,18 +2,18 @@ package dev.smd.estela.backend.dto;
 
 public class LoginCredentialsDTO {
 
-        private String username;
+        private String email;
         private String password;
 
         public LoginCredentialsDTO() {
         }
 
-        public String getUsername() {
-                return username;
+        public String getEmail() {
+                return email;
         }
 
-        public void setUsername(String username) {
-                this.username = username;
+        public void setEmail(String email) {
+                this.email = email;
         }
 
         public String getPassword() {

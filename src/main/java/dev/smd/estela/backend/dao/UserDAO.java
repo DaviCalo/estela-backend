@@ -18,10 +18,16 @@ public class UserDAO {
                         Class.forName(DB_DRIVER);
                         Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
                         Statement statement = connection.createStatement();
-                        ResultSet resultSet = statement.executeQuery("SELECT * FROM games");
+                        ResultSet resultSet = statement.executeQuery("SELECT user_id, name, email, password, administrator, nickname, file_name FROM users");
                         while (resultSet.next()) {
                                 User user = new User();
-
+                                user.setUserId(resultSet.getLong("user_id"));
+                                user.setName(resultSet.getString("name"));
+                                user.setEmail(resultSet.getString("email"));
+                                user.setPassword(resultSet.getString("password"));
+                                user.setAdministrator(resultSet.getBoolean("administrator"));
+                                user.setNickname(resultSet.getString("nickname"));
+                                user.setFileName(resultSet.getString("file_name"));
                                 resultado.add(user);
                         }
                         resultSet.close();
@@ -89,12 +95,12 @@ public class UserDAO {
                 try {
                         Class.forName(DB_DRIVER);
                         Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-                        PreparedStatement preparedStatement = connection.prepareStatement("UPDATE users SET price = ?, name = ?, characteristics = ?, description = ?, hard_drive_space = ?, graphics_card = ?, memory = ?, operating_system = ?, processor = ? WHERE game_id = ?");
+                        PreparedStatement preparedStatement = connection.prepareStatement("UPDATE users SET name = ?, email = ?, password = ?, nickname = ? WHERE user_id = ?");
                         preparedStatement.setString(1, newUser.getName());
                         preparedStatement.setString(2, newUser.getEmail());
                         preparedStatement.setString(3, newUser.getPassword());
-                        preparedStatement.setBoolean(4, newUser.getAdministrator());
-                        preparedStatement.setString(5, newUser.getNickname());
+                        preparedStatement.setString(4, newUser.getNickname());
+                        preparedStatement.setLong(5, newUser.getUserId());
                         isSuccess = (preparedStatement.executeUpdate() == 1);
                         preparedStatement.close();
                         connection.close();
@@ -122,13 +128,13 @@ public class UserDAO {
                 return isSuccess;
         }
 
-        public User login(String userName, String password) {
+        public User login(String email, String password) {
                 User user = null;
                 try {
                         Class.forName(DB_DRIVER);
                         Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-                        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM users WHERE email =? AND password =?");
-                        preparedStatement.setString(1, userName);
+                        PreparedStatement preparedStatement = connection.prepareStatement("SELECT email, password, user_id FROM users WHERE email =? AND password =?");
+                        preparedStatement.setString(1, email);
                         preparedStatement.setString(2, password);
                         ResultSet resultSet = preparedStatement.executeQuery();
                         while (resultSet.next()) {

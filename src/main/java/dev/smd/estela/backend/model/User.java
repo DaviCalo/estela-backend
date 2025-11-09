@@ -1,9 +1,9 @@
 package dev.smd.estela.backend.model;
 
+import dev.smd.estela.backend.dto.UpdateUserDTO;
 import java.io.Serializable;
 
 public class User implements Serializable {
-
         private Long userId;
         private String name;
         private String email;
@@ -13,6 +13,14 @@ public class User implements Serializable {
         private String fileName;
 
         public User() {
+        }
+        
+         public User(UpdateUserDTO updateUserDTO) {
+                 this.userId = updateUserDTO.getUserId();
+                 this.name = updateUserDTO.getName();
+                 this.email = updateUserDTO.getEmail();
+                 this.password = updateUserDTO.getPassword();
+                 this.nickname = updateUserDTO.getNickname();
         }
 
         public User(Long userId, String name, String email, String password, Boolean administrator, String nickname, String fileName) {
