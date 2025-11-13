@@ -111,13 +111,13 @@ public class UserDAO {
                 return isSuccess;
         }
 
-        public boolean deleteById(int gameId) {
+        public boolean deleteById(Long gameId) {
                 boolean isSuccess = false;
                 try {
                         Class.forName(DB_DRIVER);
                         Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
                         PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM users WHERE user_id = ?");
-                        preparedStatement.setInt(1, gameId);
+                        preparedStatement.setLong(1, gameId);
                         isSuccess = (preparedStatement.executeUpdate() == 1);
                         preparedStatement.close();
                         connection.close();

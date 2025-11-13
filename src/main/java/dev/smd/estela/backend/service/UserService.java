@@ -37,4 +37,8 @@ public class UserService {
         public User getUserById(Long userId){
                 return  userDao.getById(userId);
         }
+        
+         public boolean  deleteUser(Long userId){
+                return  userDao.deleteById(userId);
+        }
 }

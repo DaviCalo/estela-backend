@@ -9,19 +9,17 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
-import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-@WebFilter(urlPatterns = "/api/*")
 public class AuthFilter implements Filter {
 
         private static final List<String> PUBLIC_ROUTES = Arrays.asList(
                   "/api/login",
                   "/api/register"
         );
-
+        
         @Override
         public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
                   throws IOException, ServletException {

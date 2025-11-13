@@ -25,12 +25,20 @@ public class UserServlet extends HttpServlet {
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 PrintWriter out = response.getWriter();
+                String userIdString = request.getParameter("userid");
 
-                Long userIdParam = Long.valueOf(request.getParameter("userid"));
-
-                if (userIdParam == null) {
+                if (userIdString == null || userIdString.trim().isEmpty()) {
                         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                         out.print("{\"error\": \"Id do usuario é obrigatório\"}");
+                        return;
+                }
+
+                Long userIdParam;
+                try {
+                        userIdParam = Long.valueOf(userIdString);
+                } catch (NumberFormatException e) {
+                        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                        out.print("{\"error\": \"Id do usuario inválido\"}");
                         return;
                 }
 
@@ -40,7 +48,10 @@ public class UserServlet extends HttpServlet {
                         out.print("{\"status\": \"error\", \"message\": \"Usuário com ID " + userIdParam + " não encontrado.\"}");
                 } else {
                         response.setStatus(HttpServletResponse.SC_OK);
-                        String userJson = gson.toJson(user);
+                        java.util.Map<String, Object> responseMap = new java.util.HashMap<>();
+                        responseMap.put("status", "success");
+                        responseMap.put("user", user);
+                        String userJson = gson.toJson(responseMap);
                         out.print(userJson);
                 }
 
@@ -76,8 +87,6 @@ public class UserServlet extends HttpServlet {
                         return;
                 }
 
-                System.out.println(updateUserDTO);
-
                 Boolean isSucess = userService.updateUser(updateUserDTO);
 
                 if (isSucess) {
@@ -86,5 +95,40 @@ public class UserServlet extends HttpServlet {
                         response.setStatus(HttpServletResponse.SC_CONFLICT);
                         out.print("{\"status\": \"error\", \"message\": \"Falha na atualização.\"}");
                 }
+        }
+
+        @Override
+        protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                PrintWriter out = response.getWriter();
+                
+                String userIdString = request.getParameter("userid");
+
+                if (userIdString == null || userIdString.trim().isEmpty()) {
+                        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                        out.print("{\"error\": \"Id do usuario é obrigatório\"}");
+                        return;
+                }
+
+                Long userIdParam;
+                try {
+                        userIdParam = Long.valueOf(userIdString);
+                } catch (NumberFormatException e) {
+                        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                        out.print("{\"error\": \"Id do usuario inválido\"}");
+                        return;
+                }
+
+                Boolean isSuccess = userService.deleteUser(userIdParam);
+
+                if (isSuccess) {
+                        response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+                } else {
+                        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                        out.print("{\"status\": \"error\", \"message\": \"Usuário com ID " + userIdParam + " não encontrado.\"}");
+                }
+
+                out.flush();
         }
 }

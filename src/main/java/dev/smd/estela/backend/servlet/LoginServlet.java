@@ -46,8 +46,6 @@ public class LoginServlet extends HttpServlet {
                 String email = credentials.getEmail();
                 String password = credentials.getPassword();
 
-                System.out.println(email + " " + password);
-
                 if (email == null || password == null) {
                         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                         out.print("{\"error\": \"Nome de usuário e senha são obrigatórios.\"}");

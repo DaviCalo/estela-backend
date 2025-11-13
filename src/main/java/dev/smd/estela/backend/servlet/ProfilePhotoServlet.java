@@ -26,18 +26,18 @@ public class ProfilePhotoServlet extends HttpServlet {
                   throws ServletException, IOException {
                 response.setContentType("application/json");
 
-                Long userId;
                 String userIdParam = request.getParameter("userid");
+                Long userId;
 
                 if (userIdParam == null || userIdParam.trim().isEmpty()) {
-                        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "ID do usuário é obrigatório.");
+                        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Parâmetro 'userid' é obrigatório.");
                         return;
                 }
 
                 try {
                         userId = Long.valueOf(userIdParam);
                 } catch (NumberFormatException e) {
-                        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Formato do ID do usuário inválido.");
+                        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Formato do ID de usuário inválido.");
                         return;
                 }
 
@@ -80,7 +80,6 @@ public class ProfilePhotoServlet extends HttpServlet {
 
                         response.setStatus(HttpServletResponse.SC_CREATED);
                         response.getWriter().write("{\"mensagem\": \"Upload realizado com sucesso\", \"fileName\": \"" + newFileName + "\"}");
-
                 } catch (ServletException e) {
                         response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Falha na requisição: certifique-se de que o enctype é 'multipart/form-data'.");
                 } catch (IOException e) {
@@ -91,7 +90,6 @@ public class ProfilePhotoServlet extends HttpServlet {
         @Override
         protected void doGet(HttpServletRequest request, HttpServletResponse response)
                   throws ServletException, IOException {
-                System.out.println("login");
                 String userIdParam = request.getParameter("userid");
                 Long userId;
 
