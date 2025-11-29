@@ -88,4 +88,10 @@ public class User implements Serializable {
         public void setFileName(String fileName) {
                 this.fileName = fileName;
         }
+
+        @Override
+        public String toString() {
+                return "User{" + "userId=" + userId + ", name=" + name + ", email=" + email + ", password=" + password + ", administrator=" + administrator + ", nickname=" + nickname + ", fileName=" + fileName + '}';
+        }
+        
 }

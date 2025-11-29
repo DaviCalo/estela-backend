@@ -11,7 +11,7 @@ public class AuthService {
         public Optional<User> authenticate(String email, String password) {;
                 User user = userDto.login(email, password);
 
-                if (user != null && user.getPassword().equals(password)) {
+                if (user != null) {
                         return Optional.of(user);
                 }
                 return Optional.empty();

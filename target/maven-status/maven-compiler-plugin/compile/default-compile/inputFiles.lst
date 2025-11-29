@@ -8,9 +8,12 @@ C:\Users\maria\Programacao\estela-backend\src\main\java\dev\smd\estela\backend\m
 C:\Users\maria\Programacao\estela-backend\src\main\java\dev\smd\estela\backend\model\Category.java
 C:\Users\maria\Programacao\estela-backend\src\main\java\dev\smd\estela\backend\dto\UpdateUserDTO.java
 C:\Users\maria\Programacao\estela-backend\src\main\java\dev\smd\estela\backend\servlet\LogoutServlet.java
+C:\Users\maria\Programacao\estela-backend\src\main\java\dev\smd\estela\backend\servlet\ListOfGamesServlet.java
 C:\Users\maria\Programacao\estela-backend\src\main\java\dev\smd\estela\backend\dao\CategorysGamesDAO.java
 C:\Users\maria\Programacao\estela-backend\src\main\java\dev\smd\estela\backend\dao\SaleDAO.java
 C:\Users\maria\Programacao\estela-backend\src\main\java\dev\smd\estela\backend\dto\LoginCredentialsDTO.java
+C:\Users\maria\Programacao\estela-backend\src\main\java\dev\smd\estela\backend\servlet\DownloadCoverGameServlet.java
+C:\Users\maria\Programacao\estela-backend\src\main\java\dev\smd\estela\backend\utils\LocalDateTimeAdapter.java
 C:\Users\maria\Programacao\estela-backend\src\main\java\dev\smd\estela\backend\dao\CategoryDAO.java
 C:\Users\maria\Programacao\estela-backend\src\main\java\dev\smd\estela\backend\model\Wishlist.java
 C:\Users\maria\Programacao\estela-backend\src\main\java\dev\smd\estela\backend\service\UserService.java
@@ -18,11 +21,13 @@ C:\Users\maria\Programacao\estela-backend\src\main\java\dev\smd\estela\backend\s
 C:\Users\maria\Programacao\estela-backend\src\main\java\dev\smd\estela\backend\dao\SalesGamesDAO.java
 C:\Users\maria\Programacao\estela-backend\src\main\java\dev\smd\estela\backend\model\User.java
 C:\Users\maria\Programacao\estela-backend\src\main\java\dev\smd\estela\backend\servlet\ProfilePhotoServlet.java
+C:\Users\maria\Programacao\estela-backend\src\main\java\dev\smd\estela\backend\service\GameService.java
 C:\Users\maria\Programacao\estela-backend\src\main\java\dev\smd\estela\backend\model\Game.java
 C:\Users\maria\Programacao\estela-backend\src\main\java\dev\smd\estela\backend\dao\MediaDAO.java
 C:\Users\maria\Programacao\estela-backend\src\main\java\dev\smd\estela\backend\servlet\UserServlet.java
 C:\Users\maria\Programacao\estela-backend\src\main\java\dev\smd\estela\backend\model\Sale.java
 C:\Users\maria\Programacao\estela-backend\src\main\java\dev\smd\estela\backend\model\Media.java
+C:\Users\maria\Programacao\estela-backend\src\main\java\dev\smd\estela\backend\dto\ReponseGamesDTO.java
 C:\Users\maria\Programacao\estela-backend\src\main\java\dev\smd\estela\backend\filter\CorsFilter.java
 C:\Users\maria\Programacao\estela-backend\src\main\java\dev\smd\estela\backend\dao\GameDAO.java
 C:\Users\maria\Programacao\estela-backend\src\main\java\dev\smd\estela\backend\dto\NewUserDTO.java

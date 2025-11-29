@@ -16,18 +16,24 @@ import jakarta.servlet.http.HttpSession;
 public class AuthFilter implements Filter {
 
         private static final List<String> PUBLIC_ROUTES = Arrays.asList(
-                  "/api/login",
-                  "/api/register"
+                "/api/login",
+                "/api/register",
+                "/api/game/cover/*",
+                "/api/games"
         );
         
         @Override
         public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
-                  throws IOException, ServletException {
+                    throws IOException, ServletException {
 
                 HttpServletRequest request = (HttpServletRequest) req;
                 HttpServletResponse response = (HttpServletResponse) res;
 
                 String path = request.getRequestURI().substring(request.getContextPath().length());
+   
+                if (path.length() > 1 && path.endsWith("/")) {
+                    path = path.substring(0, path.length() - 1);
+                }
 
                 if (isPublicRoute(path)) {
                         chain.doFilter(request, response);
@@ -37,15 +43,29 @@ public class AuthFilter implements Filter {
                                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                                 response.setContentType("application/json");
                                 response.setCharacterEncoding("UTF-8");
-                                String jsonResponse = "{\"status\": 401, \"message\": \"Invalid or expired session.\"}";
+                                String jsonResponse = "{\"status\": 401, \"message\": \"Sessão inválida ou expirada. Acesso requer autenticação.\"}";
                                 response.getWriter().write(jsonResponse);
                         } else {
                                 chain.doFilter(request, response);
                         }
                 }
         }
+        
+        @Override
+        public void destroy() {
+        }
 
         private boolean isPublicRoute(String path) {
-                return PUBLIC_ROUTES.contains(path);
+            for (String publicRoute : PUBLIC_ROUTES) {
+                if (publicRoute.endsWith("/*")) {
+                    String prefix = publicRoute.substring(0, publicRoute.length() - 2); 
+                    if (path.startsWith(prefix)) {
+                        return true;
+                    }
+                } else if (publicRoute.equals(path)) {
+                    return true;
+                }
+            }
+            return false;
         }
 }

@@ -79,7 +79,6 @@ public class UserDAO {
                         preparedStatement.setString(3, newUser.getPassword());
                         preparedStatement.setBoolean(4, newUser.getAdministrator());
                         preparedStatement.setString(5, newUser.getNickname());
-
                         isSuccess = (preparedStatement.executeUpdate() == 1);
                         preparedStatement.close();
                         connection.close();
@@ -133,15 +132,15 @@ public class UserDAO {
                 try {
                         Class.forName(DB_DRIVER);
                         Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-                        PreparedStatement preparedStatement = connection.prepareStatement("SELECT email, password, user_id FROM users WHERE email =? AND password =?");
+                        PreparedStatement preparedStatement = connection.prepareStatement("SELECT user_id, email, administrator FROM users WHERE email =? AND password =?");
                         preparedStatement.setString(1, email);
                         preparedStatement.setString(2, password);
                         ResultSet resultSet = preparedStatement.executeQuery();
                         while (resultSet.next()) {
                                 user = new User();
-                                user.setEmail(resultSet.getString("email"));
-                                user.setPassword(resultSet.getString("password"));
                                 user.setUserId(resultSet.getLong("user_id"));
+                                user.setEmail(resultSet.getString("email"));
+                                user.setAdministrator(resultSet.getBoolean("administrator"));
                         }
                         resultSet.close();
                         preparedStatement.close();
@@ -150,7 +149,6 @@ public class UserDAO {
                         System.out.println(ex.getMessage());
                         return null;
                 }
-                System.out.println(user.toString());
                 return user;
         }
 

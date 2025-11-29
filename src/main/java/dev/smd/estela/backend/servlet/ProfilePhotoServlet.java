@@ -1,5 +1,6 @@
 package dev.smd.estela.backend.servlet;
 
+import static dev.smd.estela.backend.config.Config.PATH_FILES_USERS;
 import dev.smd.estela.backend.service.UserService;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
@@ -14,10 +15,9 @@ import java.io.FileInputStream;
 import java.io.OutputStream;
 
 @WebServlet(name = "profilephoto", urlPatterns = {"/api/profilephoto"})
-@MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 1024 * 1024 * 50, maxRequestSize = 1024 * 1024 * 55)
+@MultipartConfig(fileSizeThreshold = 1048576, maxFileSize = 52428800, maxRequestSize = 62914560)
 public class ProfilePhotoServlet extends HttpServlet {
 
-        private static final String UPLOAD_DIRECTORY = "uploads";
         private static final int BUFFER_SIZE = 4096;
         private final UserService userService = new UserService();
 
@@ -63,7 +63,7 @@ public class ProfilePhotoServlet extends HttpServlet {
                         newFileName = userId + fileExtension;
 
                         String applicationPath = request.getServletContext().getRealPath("");
-                        String uploadPath = applicationPath + File.separator + UPLOAD_DIRECTORY;
+                        String uploadPath = PATH_FILES_USERS;
 
                         File uploadDir = new File(uploadPath);
                         if (!uploadDir.exists()) {
@@ -126,6 +126,7 @@ public class ProfilePhotoServlet extends HttpServlet {
 
                 response.setContentType(mimeType);
                 response.setContentLength((int) file.length());
+                response.setHeader("Content-Disposition", "attachment; filename=\"" +file.getName() + "\""); 
 
                 try (FileInputStream inputStream = new FileInputStream(file); OutputStream outputStream = response.getOutputStream()) {
 

@@ -73,7 +73,8 @@ CREATE TABLE public.games (
     graphics_card character varying(255),
     memory character varying(255),
     operating_system character varying(255),
-    processor character varying(255)
+    processor character varying(255),
+    createdAt TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW()
 );
 
 

@@ -6,12 +6,14 @@ package dev.smd.estela.backend.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 public class Game implements Serializable {
 
         private Long gameId;
         private BigDecimal price;
         private String name;
+        private String urlCover;
         private String characteristics;
         private String description;
         private String hardDriveSpace;
@@ -19,11 +21,12 @@ public class Game implements Serializable {
         private String memory;
         private String operatingSystem;
         private String processor;
+        private LocalDateTime createdAt;
 
         public Game() {
         }
 
-        public Game(Long gameId, BigDecimal price, String name, String characteristics, String description, String hardDriveSpace, String graphicsCard, String memory, String operatingSystem, String processor) {
+        public Game(Long gameId, BigDecimal price, String name, String characteristics, String urlCover, String description, String hardDriveSpace, String graphicsCard, String memory, String operatingSystem, String processor, LocalDateTime createdAt) {
             this.gameId = gameId;
             this.price = price;
             this.name = name;
@@ -34,6 +37,7 @@ public class Game implements Serializable {
             this.memory = memory;
             this.operatingSystem = operatingSystem;
             this.processor = processor;
+            this.createdAt = createdAt;
         }
 
         public Long getGameId() {
@@ -58,6 +62,14 @@ public class Game implements Serializable {
 
         public void setName(String name) {
             this.name = name;
+        }
+
+        public String getUrlCover() {
+                return urlCover;
+        }
+
+        public void setUrlCover(String urlCover) {
+                this.urlCover = urlCover;
         }
 
         public String getCharacteristics() {
@@ -115,4 +127,18 @@ public class Game implements Serializable {
         public void setProcessor(String processor) {
             this.processor = processor;
         }
+
+        public LocalDateTime getCreatedAt() {
+                return createdAt;
+        }
+
+        public void setCreatedAt(LocalDateTime createdAt) {
+                this.createdAt = createdAt;
+        }
+
+        @Override
+        public String toString() {
+                return "Game{" + "gameId=" + gameId + ", price=" + price + ", name=" + name + ", urlCover=" + urlCover + ", characteristics=" + characteristics + ", description=" + description + ", hardDriveSpace=" + hardDriveSpace + ", graphicsCard=" + graphicsCard + ", memory=" + memory + ", operatingSystem=" + operatingSystem + ", processor=" + processor + ", createdAt=" + createdAt + '}';
+        }
+        
 }

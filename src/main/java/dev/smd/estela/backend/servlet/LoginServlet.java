@@ -61,11 +61,12 @@ public class LoginServlet extends HttpServlet {
                         User authenticatedUser = authenticatedUserOptional.get();
                         sessao.setAttribute("user", authenticatedUser);
                         String jsonResponse = String.format(
-                                  "{\"status\": \"success\", \"user\": {\"username\": \"%s\", \"role\": \"%b\", \"userid\": %d}}",
+                                  "{\"status\": \"success\", \"user\": {\"username\": \"%s\", \"isADM\": \"%b\", \"userid\": %d}}",
                                   authenticatedUser.getEmail(),
                                   authenticatedUser.getAdministrator(),
                                   authenticatedUser.getUserId()
                         );
+                        System.out.println(jsonResponse);
                         out.print(jsonResponse);
                 } else {
                         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
