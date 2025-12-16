@@ -11,7 +11,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
 
-@WebServlet(name = "downloadcovergameServlet", urlPatterns = {"/api/game/cover/*"} )
+@WebServlet(name = "DownloadCoverGameServlet", urlPatterns = {"/api/game/cover/*"} )
 public class DownloadCoverGameServlet extends HttpServlet {
     private static final int BUFFER_SIZE = 4096;
 

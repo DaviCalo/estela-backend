@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet(name = "listofgames", urlPatterns = {"/api/games"})
+@WebServlet(name = "ListofGamesServlet", urlPatterns = {"/api/games"})
 public class ListOfGamesServlet extends HttpServlet {
 
         private final GameService gameService = new GameService();

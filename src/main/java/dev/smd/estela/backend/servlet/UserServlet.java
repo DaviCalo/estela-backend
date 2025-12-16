@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet(name = "user", urlPatterns = {"/api/user"})
+@WebServlet(name = "UserServlet", urlPatterns = {"/api/user"})
 public class UserServlet extends HttpServlet {
 
         private final Gson gson = new Gson();

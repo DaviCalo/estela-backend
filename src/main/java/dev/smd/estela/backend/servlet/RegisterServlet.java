@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Optional;
 
-@WebServlet(name = "register", urlPatterns = {"/api/register"})
+@WebServlet(name = "RegisterServlet", urlPatterns = {"/api/register"})
 public class RegisterServlet extends HttpServlet {
 
         private final AuthService authService = new AuthService();
@@ -63,7 +63,7 @@ public class RegisterServlet extends HttpServlet {
                         sessao.setAttribute("user", authenticatedUser);
                         response.setStatus(HttpServletResponse.SC_CREATED);
                         String jsonResponse = String.format(
-                                  "{\"status\": \"success\", \"user\": {\"username\": \"%s\", \"role\": \"%b\", \"userid\": %d}}",
+                                  "{\"status\": \"success\", \"user\": {\"username\": \"%s\", \"isADM\": \"%b\", \"userid\": %d}}",
                                   user.getEmail(),
                                   user.getAdministrator(),
                                   user.getUserId()

@@ -14,7 +14,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
 
-@WebServlet(name = "profilephoto", urlPatterns = {"/api/profilephoto"})
+@WebServlet(name = "ProfilePhotoServlet", urlPatterns = {"/api/profilephoto"})
 @MultipartConfig(fileSizeThreshold = 1048576, maxFileSize = 52428800, maxRequestSize = 62914560)
 public class ProfilePhotoServlet extends HttpServlet {
 
@@ -62,7 +62,6 @@ public class ProfilePhotoServlet extends HttpServlet {
 
                         newFileName = userId + fileExtension;
 
-                        String applicationPath = request.getServletContext().getRealPath("");
                         String uploadPath = PATH_FILES_USERS;
 
                         File uploadDir = new File(uploadPath);

@@ -18,6 +18,13 @@ public class Media implements Serializable {
             this.mediaType = mediaType;
             this.gameId = gameId;
         }
+        
+        public Media(String url, String mediaType, Long gameId) {
+            this.id = id;
+            this.url = url;
+            this.mediaType = mediaType;
+            this.gameId = gameId;
+        }
 
         public Long getId() {
             return id;

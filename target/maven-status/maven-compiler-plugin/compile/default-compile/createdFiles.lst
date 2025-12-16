@@ -17,6 +17,7 @@ dev\smd\estela\backend\servlet\LoginServlet.class
 dev\smd\estela\backend\service\UserService.class
 dev\smd\estela\backend\model\Media.class
 dev\smd\estela\backend\JakartaRestConfiguration.class
+dev\smd\estela\backend\servlet\GameServlet.class
 dev\smd\estela\backend\model\Wishlist.class
 dev\smd\estela\backend\dto\NewUserDTO.class
 dev\smd\estela\backend\filter\AuthFilter.class

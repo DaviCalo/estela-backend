@@ -16,7 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.Optional;
 
-@WebServlet(name = "login", urlPatterns = {"/api/login"})
+@WebServlet(name = "LoginServlet", urlPatterns = {"/api/login"})
 public class LoginServlet extends HttpServlet {
 
         private final AuthService authService = new AuthService();

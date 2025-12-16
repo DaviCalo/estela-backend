@@ -60,7 +60,7 @@ public class GameDAO {
                                 game.setPrice(resultSet.getBigDecimal(2));
                                 game.setName(resultSet.getString(3));
                                 game.setUrlCover(resultSet.getString(4));
-                               game.setCreatedAt(resultSet.getObject(5, java.time.LocalDateTime.class));
+                                game.setCreatedAt(resultSet.getObject(5, java.time.LocalDateTime.class));
                                 resultado.add(game);
                         }
                         resultSet.close();
@@ -80,6 +80,37 @@ public class GameDAO {
                         Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
                         PreparedStatement preparedStatement = connection.prepareStatement("SELECT game_id, price, name, characteristics, description, hard_drive_space, graphics_card, memory, operating_system, processor FROM games WHERE game_id = ?");
                         preparedStatement.setLong(1, gameId);
+                        ResultSet resultSet = preparedStatement.executeQuery();
+                        while (resultSet.next()) {
+                                game = new Game();
+                                game.setGameId(resultSet.getLong("game_id"));
+                                game.setPrice(resultSet.getBigDecimal("price"));
+                                game.setName(resultSet.getString("name"));
+                                game.setCharacteristics(resultSet.getString("characteristics"));
+                                game.setDescription(resultSet.getString("description"));
+                                game.setHardDriveSpace(resultSet.getString("hard_drive_space"));
+                                game.setGraphicsCard(resultSet.getString("graphics_card"));
+                                game.setMemory(resultSet.getString("memory"));
+                                game.setOperatingSystem(resultSet.getString("operating_system"));
+                                game.setProcessor(resultSet.getString("processor"));
+                        }
+                        resultSet.close();
+                        preparedStatement.close();
+                        connection.close();
+                } catch (ClassNotFoundException | SQLException ex) {
+                        System.out.println(ex.getMessage());
+                        return null;
+                }
+                return game;
+        }
+
+        public Game getByName(String gameName) {
+                Game game = null;
+                try {
+                        Class.forName(DB_DRIVER);
+                        Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+                        PreparedStatement preparedStatement = connection.prepareStatement("SELECT game_id, price, name, characteristics, description, hard_drive_space, graphics_card, memory, operating_system, processor FROM games WHERE name = ?");
+                        preparedStatement.setString(1, gameName);
                         ResultSet resultSet = preparedStatement.executeQuery();
                         while (resultSet.next()) {
                                 game = new Game();
