@@ -42,13 +42,10 @@ public class GameServlet extends HttpServlet {
                 String memoryParam = request.getParameter("memory");
                 String operatingSystemParam = request.getParameter("operatingSystem");
                 String processorParam = request.getParameter("processor");
-
                 Part coverPart = request.getPart("cover_game");
                 Part iconPart = request.getPart("icon_game");
 
                 ArrayList<Part> listOfMidias = new ArrayList<>();
-
-                System.out.println("Recebida foto: ");
 
                 for (int i = 1; i <= 6; i++) {
                         Part photoPart = request.getPart("midia_game_" + i);
@@ -79,7 +76,6 @@ public class GameServlet extends HttpServlet {
 
                 response.setContentType("application/json");
                 response.getWriter().print("{\"status\": \"sucess\"}");
-
         }
 
         public static BigDecimal stringToBigDecimal(String value) {

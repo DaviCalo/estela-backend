@@ -21,7 +21,6 @@ public class MediaDAO {
             preparedStatement.setString(1, newMedia.getUrl());
             preparedStatement.setString(2, newMedia.getMediaType());
             preparedStatement.setLong(3, newMedia.getGameId());
-
             isSuccess = (preparedStatement.executeUpdate() == 1);
             preparedStatement.close();
             connection.close();

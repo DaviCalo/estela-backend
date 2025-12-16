@@ -17,4 +17,9 @@ public class ReponseGamesDTO {
                 this.coverUrl = coverUrl;
                 this.createdAt = createdAt;
         }
+
+    @Override
+    public String toString() {
+        return "ReponseGamesDTO{" + "gameId=" + gameId + ", name=" + name + ", price=" + price + ", coverUrl=" + coverUrl + ", createdAt=" + createdAt + '}';
+    }
 }
