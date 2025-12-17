@@ -14,7 +14,7 @@ import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
-@WebServlet(name = "GameServlet", urlPatterns = {"/game"})
+@WebServlet(name = "GameServlet", urlPatterns = {"/api/game"})
 @MultipartConfig(
           fileSizeThreshold = 1048576,
           maxFileSize = 524288000,
@@ -35,20 +35,21 @@ public class GameServlet extends HttpServlet {
                 String nameParam = request.getParameter("name");
                 String descriptionParam = request.getParameter("description");
                 BigDecimal priceParam = stringToBigDecimal(request.getParameter("price"));
-                String tagsParam = request.getParameter("tags");
+                String categoryIdsParam = request.getParameter("categoryIds");
                 String characteristicsParam = request.getParameter("characteristics");
+                
                 String hardDriveSpaceParam = request.getParameter("hardDriveSpace");
                 String graphicsCardParam = request.getParameter("graphicsCard");
                 String memoryParam = request.getParameter("memory");
                 String operatingSystemParam = request.getParameter("operatingSystem");
                 String processorParam = request.getParameter("processor");
-                Part coverPart = request.getPart("cover_game");
-                Part iconPart = request.getPart("icon_game");
+                Part coverPart = request.getPart("coverGame");
+                Part iconPart = request.getPart("iconImage");
 
                 ArrayList<Part> listOfMidias = new ArrayList<>();
 
                 for (int i = 1; i <= 6; i++) {
-                        Part photoPart = request.getPart("midia_game_" + i);
+                        Part photoPart = request.getPart("midiaGame" + i);
 
                         if (photoPart != null && photoPart.getSize() > 0) {
                                 String fileName = photoPart.getSubmittedFileName();
