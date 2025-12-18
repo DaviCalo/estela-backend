@@ -2,6 +2,7 @@ package dev.smd.estela.backend.service;
 
 import static dev.smd.estela.backend.config.Config.PATH_FILES_GAMES;
 import static dev.smd.estela.backend.config.Config.PATH_FILES_USERS;
+import dev.smd.estela.backend.dao.CategorysGamesDAO;
 import dev.smd.estela.backend.dao.GameDAO;
 import dev.smd.estela.backend.dao.MediaDAO;
 import dev.smd.estela.backend.dto.ReponseGameDetailsDTO;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 public class GameService {
 
     private static final GameDAO gameDao = new GameDAO();
+    private static final CategorysGamesDAO categoryGameDao = new CategorysGamesDAO();
     private static final MediaDAO mediaDao = new MediaDAO();
 
     public ArrayList<ReponseGamesDTO> listAllGames() {
@@ -43,12 +45,26 @@ public class GameService {
         return gamesList;
     }
 
-    public boolean saveGame(BigDecimal price, String name, String characteristics, String description, String hardDriveSpace, String graphicsCard, String memory, String operatingSystem, String processor, Part coverPart, Part iconPart, List<Part> listOfMidias) {
+    public boolean saveGame(BigDecimal price, String name, String characteristics, String description, String hardDriveSpace, String graphicsCard, String memory, String operatingSystem, String processor, Part coverPart, Part iconPart, List<Part> listOfMidias, String categoryIdsParam) {
         Game newGame = new Game(null, price, name, characteristics, null, description, hardDriveSpace, graphicsCard, memory, operatingSystem, processor, null);
         boolean isSucess = gameDao.save(newGame);
 
         if (isSucess) {
             Game gameSaved = gameDao.getByName(name);
+            Long newGameId = gameSaved.getGameId();
+
+            if (categoryIdsParam != null && !categoryIdsParam.trim().isEmpty()) {
+                String[] ids = categoryIdsParam.split(",");
+                for (String idStr : ids) {
+                    try {
+                        Long catId = Long.parseLong(idStr.trim());
+                        categoryGameDao.linkGameToCategory(newGameId, catId);
+                    } catch (NumberFormatException e) {
+                        System.out.println("ID inválido: " + idStr);
+                    }
+                }
+            }
+
             String converGame = "cover_game_" + gameSaved.getGameId();
             String IconGame = "icon_game_" + gameSaved.getGameId();
             String extensionCover = coverPart.getSubmittedFileName().substring(coverPart.getSubmittedFileName().lastIndexOf("."));

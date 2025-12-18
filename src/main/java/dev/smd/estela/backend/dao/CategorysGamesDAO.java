@@ -12,22 +12,18 @@ import java.util.List;
 
 public class CategorysGamesDAO {
 
-    public Boolean save(CategoryGame item) {
-        boolean isSuccess = false;
+    public void linkGameToCategory(Long gameId, Long categoryId) {
+        String sql = "INSERT INTO categorys_games (game_id, categorys_id) VALUES (?, ?)";
         try {
             Class.forName(DB_DRIVER);
-            Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO categorys_games (categorys_id, game_id) VALUES (?, ?)");
-            preparedStatement.setLong(1, item.getCategoryId());
-            preparedStatement.setLong(2, item.getGameId());
-            isSuccess = (preparedStatement.executeUpdate() == 1);
-            preparedStatement.close();
-            connection.close();
-        } catch (ClassNotFoundException | SQLException ex) {
-            System.out.println(ex.getMessage());
-            return isSuccess;
+            try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD); PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setLong(1, gameId);
+                ps.setLong(2, categoryId);
+                ps.executeUpdate();
+            }
+        } catch (Exception ex) {
+            System.out.println("Erro ao vincular categoria no DAO: " + ex.getMessage());
         }
-        return isSuccess;
     }
 
     // Remove um jogo de uma categoria

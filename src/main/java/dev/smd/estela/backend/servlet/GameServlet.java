@@ -82,7 +82,8 @@ public class GameServlet extends HttpServlet {
                 processorParam,
                 coverPart,
                 iconPart,
-                listOfMidias
+                listOfMidias,
+                categoryIdsParam
         );
 
         response.setContentType("application/json");
@@ -168,12 +169,22 @@ public class GameServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
 
         try {
-            // Coleta de parâmetros comuns
+            String gameIdParam = request.getParameter("gameId");
+
+            if (gameIdParam == null || gameIdParam.trim().isEmpty() || gameIdParam.equals("null")) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST); // 400 Bad Request
+                out.print("{\"error\": \"O ID do jogo é obrigatório para atualização.\"}");
+                return;
+            }
+
+            Long gameId = Long.valueOf(gameIdParam);
+
             String nameParam = request.getParameter("name");
             String descriptionParam = request.getParameter("description");
             BigDecimal priceParam = stringToBigDecimal(request.getParameter("price"));
             String categoryIdsParam = request.getParameter("categoryIds");
             String characteristicsParam = request.getParameter("characteristics");
+
             String hardDriveSpaceParam = request.getParameter("hardDriveSpace");
             String graphicsCardParam = request.getParameter("graphicsCard");
             String memoryParam = request.getParameter("memory");
@@ -186,40 +197,36 @@ public class GameServlet extends HttpServlet {
             ArrayList<Part> listOfMidias = new ArrayList<>();
             for (int i = 1; i <= 6; i++) {
                 Part photoPart = request.getPart("midiaGame" + i);
-                listOfMidias.add(photoPart); // Adiciona mesmo se for null, o Service filtra
+                listOfMidias.add(photoPart);
             }
 
-            // VERIFICAÇÃO CRUCIAL: É Update ou Save?
-            String gameIdParam = request.getParameter("gameId");
-
-            boolean success;
-
-            if (gameIdParam != null && !gameIdParam.trim().isEmpty() && !gameIdParam.equals("null")) {
-                // === MODO UPDATE ===
-                Long gameId = Long.valueOf(gameIdParam);
-                success = gameService.updateGame(
-                        gameId, priceParam, nameParam, characteristicsParam, descriptionParam,
-                        hardDriveSpaceParam, graphicsCardParam, memoryParam, operatingSystemParam, processorParam,
-                        coverPart, iconPart, listOfMidias, categoryIdsParam
-                );
-            } else {
-                // === MODO CREATE (Seu código antigo adaptado para aceitar categories se precisar) ===
-                // Nota: Se quiser salvar categorias no Create também, precisa ajustar o saveGame original.
-                success = gameService.saveGame(
-                        priceParam, nameParam, characteristicsParam, descriptionParam,
-                        hardDriveSpaceParam, graphicsCardParam, memoryParam, operatingSystemParam, processorParam,
-                        coverPart, iconPart, listOfMidias
-                // Adicione categoryIdsParam aqui se atualizar o saveGame também
-                );
-            }
+            boolean success = gameService.updateGame(
+                    gameId,
+                    priceParam,
+                    nameParam,
+                    characteristicsParam,
+                    descriptionParam,
+                    hardDriveSpaceParam,
+                    graphicsCardParam,
+                    memoryParam,
+                    operatingSystemParam,
+                    processorParam,
+                    coverPart,
+                    iconPart,
+                    listOfMidias,
+                    categoryIdsParam
+            );
 
             if (success) {
-                out.print("{\"status\": \"success\"}");
+                out.print("{\"status\": \"success\", \"message\": \"Jogo atualizado com sucesso\"}");
             } else {
                 response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                out.print("{\"error\": \"Erro ao processar o jogo\"}");
+                out.print("{\"error\": \"Erro ao atualizar o jogo no banco de dados\"}");
             }
 
+        } catch (NumberFormatException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            out.print("{\"error\": \"ID do jogo inválido\"}");
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             out.print("{\"error\": \"Erro interno: " + e.getMessage() + "\"}");

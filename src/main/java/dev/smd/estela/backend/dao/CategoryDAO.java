@@ -4,7 +4,7 @@ import static dev.smd.estela.backend.config.Config.DB_DRIVER;
 import static dev.smd.estela.backend.config.Config.DB_PASSWORD;
 import static dev.smd.estela.backend.config.Config.DB_URL;
 import static dev.smd.estela.backend.config.Config.DB_USER;
-import dev.smd.estela.backend.model.Category; 
+import dev.smd.estela.backend.model.Category;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ public class CategoryDAO {
             Class.forName(DB_DRIVER);
             Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT categorys_id, name FROM categorys"); 
+            ResultSet resultSet = statement.executeQuery("SELECT categorys_id, name FROM categorys");
             while (resultSet.next()) {
                 Category category = new Category();
                 category.setCategoryId(resultSet.getLong("categorys_id"));
@@ -33,6 +33,31 @@ public class CategoryDAO {
             return null;
         }
         return resultado;
+    }
+
+    public Boolean update(Category category) {
+        boolean isSuccess = false;
+        try {
+            Class.forName(DB_DRIVER);
+            Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+
+            String sql = "UPDATE categorys SET name = ? WHERE categorys_id = ?";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+            preparedStatement.setString(1, category.getName());
+
+            preparedStatement.setLong(2, category.getCategoryId());
+
+            isSuccess = (preparedStatement.executeUpdate() == 1);
+
+            preparedStatement.close();
+            connection.close();
+        } catch (ClassNotFoundException | SQLException ex) {
+            System.out.println(ex.getMessage());
+            return false;
+        }
+        return isSuccess;
     }
 
     public Category getById(Long categoryId) {
@@ -57,7 +82,7 @@ public class CategoryDAO {
         }
         return category;
     }
-    
+
     public Boolean save(Category newCategory) {
         boolean isSuccess = false;
         try {
@@ -75,7 +100,7 @@ public class CategoryDAO {
         }
         return isSuccess;
     }
-    
+
     public boolean deleteById(Long categoryId) {
         boolean isSuccess = false;
         try {
