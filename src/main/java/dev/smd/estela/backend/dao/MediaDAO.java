@@ -48,6 +48,22 @@ public class MediaDAO {
         return isSuccess;
     }
 
+    public boolean deleteByGameIdAndType(Long gameId, String mediaType) {
+        boolean isSuccess = false;
+        String sql = "DELETE FROM medias WHERE game_id = ? AND media_type = ?";
+        try {
+            Class.forName(DB_DRIVER);
+            try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD); PreparedStatement ps = connection.prepareStatement(sql)) {
+                ps.setLong(1, gameId);
+                ps.setString(2, mediaType);
+                isSuccess = (ps.executeUpdate() > 0);
+            }
+        } catch (Exception ex) {
+            System.out.println("Erro ao deletar midia antiga: " + ex.getMessage());
+        }
+        return isSuccess;
+    }
+
     public List<Media> findByGameId(Long gameId) {
         List<Media> resultado = new ArrayList<>();
         try {

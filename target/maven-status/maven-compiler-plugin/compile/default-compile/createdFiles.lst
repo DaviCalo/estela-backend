@@ -5,6 +5,7 @@ dev\smd\estela\backend\model\CategoryGame.class
 dev\smd\estela\backend\servlet\ProfilePhotoServlet.class
 dev\smd\estela\backend\model\SaleGame.class
 dev\smd\estela\backend\service\AuthService.class
+dev\smd\estela\backend\dto\ReponseGameDetailsDTO.class
 dev\smd\estela\backend\dto\UpdateUserDTO.class
 dev\smd\estela\backend\utils\LocalDateTimeAdapter.class
 dev\smd\estela\backend\servlet\ListOfCategoryServlet.class
@@ -13,6 +14,7 @@ dev\smd\estela\backend\servlet\ListOfGamesServlet.class
 dev\smd\estela\backend\servlet\UserServlet.class
 dev\smd\estela\backend\servlet\LogoutServlet.class
 dev\smd\estela\backend\service\GameService.class
+dev\smd\estela\backend\dto\ReponseGamesDetailsDTO.class
 dev\smd\estela\backend\servlet\DownloadCoverGameServlet.class
 dev\smd\estela\backend\servlet\LoginServlet.class
 dev\smd\estela\backend\service\UserService.class
@@ -33,6 +35,7 @@ dev\smd\estela\backend\dao\UserDAO.class
 dev\smd\estela\backend\model\Sale.class
 dev\smd\estela\backend\filter\CorsFilter.class
 dev\smd\estela\backend\dao\GameDAO.class
+dev\smd\estela\backend\servlet\ListOfGamesAdmServlet.class
 dev\smd\estela\backend\service\CategoryService.class
 dev\smd\estela\backend\dao\MediaDAO.class
 dev\smd\estela\backend\model\Category.class

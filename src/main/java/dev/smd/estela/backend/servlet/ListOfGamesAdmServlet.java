@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dev.smd.estela.backend.service.GameService;
 import dev.smd.estela.backend.dto.ReponseGamesDTO;
+import dev.smd.estela.backend.dto.ReponseGamesDetailsDTO;
 import dev.smd.estela.backend.utils.LocalDateTimeAdapter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -17,8 +18,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet(name = "ListofGamesServlet", urlPatterns = {"/api/games/list"})
-public class ListOfGamesServlet extends HttpServlet {
+@WebServlet(name = "ListofGamesAdmServlet", urlPatterns = {"/api/adm/games/*"})
+public class ListOfGamesAdmServlet extends HttpServlet {
 
         private final GameService gameService = new GameService();
         Gson gson = new GsonBuilder()
@@ -31,9 +32,9 @@ public class ListOfGamesServlet extends HttpServlet {
                 response.setCharacterEncoding("UTF-8");
                 PrintWriter out = response.getWriter();
 
-                ArrayList<ReponseGamesDTO> games = gameService.listAllGames();
+                ArrayList<ReponseGamesDetailsDTO> games = gameService.listAllGamesDetails();
 
-                Map<String, ArrayList<ReponseGamesDTO>> responseMap = new HashMap<>();
+                Map<String, ArrayList<ReponseGamesDetailsDTO>> responseMap = new HashMap<>();
                 responseMap.put("games", games);
                 out.print(gson.toJson(responseMap));
         }
