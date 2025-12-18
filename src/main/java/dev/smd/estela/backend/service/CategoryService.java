@@ -28,13 +28,6 @@ public class CategoryService {
     }
 
     public void updateCategory(Long id, String name) throws Exception {
-        if (id == null || id <= 0) {
-            throw new Exception("ID inválido para atualização.");
-        }
-        if (name == null || name.trim().isEmpty()) {
-            throw new Exception("O nome da categoria é obrigatório.");
-        }
-
         Category category = new Category();
         category.setCategoryId(id);
         category.setName(name); 
