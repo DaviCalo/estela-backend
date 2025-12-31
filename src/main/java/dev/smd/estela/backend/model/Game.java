@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package dev.smd.estela.backend.model;
 
 import java.io.Serializable;
@@ -14,6 +10,7 @@ public class Game implements Serializable {
     private BigDecimal price;
     private String name;
     private String urlCover;
+    private String urlIcon;
     private String characteristics;
     private String description;
     private String hardDriveSpace;
@@ -145,9 +142,17 @@ public class Game implements Serializable {
         this.sold = sold;
     }
 
+    public String getUrlIcon() {
+        return urlIcon;
+    }
+
+    public void setUrlIcon(String urlIcon) {
+        this.urlIcon = urlIcon;
+    }
+
     @Override
     public String toString() {
-        return "Game{" + "gameId=" + gameId + ", price=" + price + ", name=" + name + ", urlCover=" + urlCover + ", characteristics=" + characteristics + ", description=" + description + ", hardDriveSpace=" + hardDriveSpace + ", graphicsCard=" + graphicsCard + ", memory=" + memory + ", operatingSystem=" + operatingSystem + ", processor=" + processor + ", createdAt=" + createdAt + '}';
+        return "Game{" + "gameId=" + gameId + ", price=" + price + ", name=" + name + ", urlCover=" + urlCover + ", urlIcon=" + urlIcon + ", characteristics=" + characteristics + ", description=" + description + ", hardDriveSpace=" + hardDriveSpace + ", graphicsCard=" + graphicsCard + ", memory=" + memory + ", operatingSystem=" + operatingSystem + ", processor=" + processor + ", createdAt=" + createdAt + ", sold=" + sold + '}';
     }
 
 }

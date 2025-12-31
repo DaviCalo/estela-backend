@@ -4,7 +4,8 @@ import static dev.smd.estela.backend.config.Config.DB_DRIVER;
 import static dev.smd.estela.backend.config.Config.DB_PASSWORD;
 import static dev.smd.estela.backend.config.Config.DB_URL;
 import static dev.smd.estela.backend.config.Config.DB_USER;
-import dev.smd.estela.backend.dto.ReponseGameDetailsDTO;
+import dev.smd.estela.backend.dto.game.ReponseGameDetailsDTO;
+import dev.smd.estela.backend.dto.game.ReponseGamePurchasedDTO;
 import dev.smd.estela.backend.model.Game;
 import java.math.BigDecimal;
 
@@ -54,8 +55,8 @@ public class GameDAO {
             Statement statement = connection.createStatement();
             String sql = "SELECT g.game_id, g.price, g.name, m.url, g.CreatedAt "
                     + "FROM games g "
-                    + "LEFT JOIN medias m "
-                    + "ON g.game_id = m.game_id AND m.media_type = 'cover'";
+                    + "LEFT JOIN media m "
+                    + "ON g.game_id = m.game_id AND m.media_type = 'COVER'";
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
                 Game game = new Game();
@@ -76,9 +77,39 @@ public class GameDAO {
         return resultado;
     }
 
+    public Game getByIdWithIconAndCover(Long gameId) {
+        Game game = new Game();
+        String sql = "SELECT g.game_id, g.price, g.name, g.CreatedAt, "
+                + "m_cover.url AS cover_url, m_icon.url AS icon_url "
+                + "FROM games g "
+                + "LEFT JOIN media m_cover ON g.game_id = m_cover.game_id AND m_cover.media_type = 'COVER' "
+                + "LEFT JOIN media m_icon ON g.game_id = m_icon.game_id AND m_icon.media_type = 'ICON' "
+                + "WHERE g.game_id = ?";
+        try {
+            Class.forName(DB_DRIVER);
+            try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD); PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setLong(1, gameId);
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    while (resultSet.next()) {
+                        game.setGameId(resultSet.getLong(1));
+                        game.setPrice(resultSet.getBigDecimal(2));
+                        game.setName(resultSet.getString(3));
+                        game.setCreatedAt(resultSet.getObject(4, java.time.LocalDateTime.class));
+                        game.setUrlCover(resultSet.getString(5));
+                        game.setUrlIcon(resultSet.getString(6));
+                    }
+                }
+            }
+        } catch (ClassNotFoundException | SQLException ex) {
+            System.out.println(ex.getMessage());
+            return null;
+        }
+        return game;
+    }
+
     public List<Game> findAllGamesDetails() {
         List<Game> resultado = new ArrayList<>();
-        String sql = "SELECT g.game_id, g.price, g.name, g.createdAt, COUNT(sg.sale_id) AS quantidade_vendas "
+        String sql = "SELECT g.game_id, g.price, g.name, g.description, g.createdAt, COUNT(sg.sale_id) AS quantidade_vendas "
                 + "FROM games g "
                 + "LEFT JOIN sales_games sg ON g.game_id = sg.game_id "
                 + "GROUP BY g.game_id, g.price, g.name, g.createdAt "
@@ -86,8 +117,9 @@ public class GameDAO {
         try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD); Statement statement = connection.createStatement(); ResultSet resultSet = statement.executeQuery(sql)) {
             while (resultSet.next()) {
                 Game game = new Game();
-                game.setGameId(resultSet.getLong("game_id")); // Mais seguro usar nome da coluna
+                game.setGameId(resultSet.getLong("game_id"));
                 game.setPrice(resultSet.getBigDecimal("price"));
+                game.setDescription(resultSet.getString("description"));
                 game.setName(resultSet.getString("name"));
                 game.setCreatedAt(resultSet.getObject("createdAt", java.time.LocalDateTime.class));
                 game.setSold(resultSet.getInt("quantidade_vendas"));
@@ -217,11 +249,10 @@ public class GameDAO {
         }
     }
 
-// Limpa as categorias antigas antes de inserir as novas
     public void clearCategories(Long gameId) {
         try {
             Class.forName(DB_DRIVER);
-            try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD); PreparedStatement ps = conn.prepareStatement("DELETE FROM categorys_games WHERE game_id = ?")) {
+            try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD); PreparedStatement ps = conn.prepareStatement("DELETE FROM categories_games WHERE game_id = ?")) {
                 ps.setLong(1, gameId);
                 ps.executeUpdate();
             }
@@ -233,7 +264,7 @@ public class GameDAO {
     public void addCategory(Long gameId, Long categoryId) {
         try {
             Class.forName(DB_DRIVER);
-            try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD); PreparedStatement ps = conn.prepareStatement("INSERT INTO categorys_games (game_id, categorys_id) VALUES (?, ?)")) {
+            try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD); PreparedStatement ps = conn.prepareStatement("INSERT INTO categories_games (game_id, category_id) VALUES (?, ?)")) {
                 ps.setLong(1, gameId);
                 ps.setLong(2, categoryId);
                 ps.executeUpdate();
@@ -263,14 +294,13 @@ public class GameDAO {
     public ReponseGameDetailsDTO getGameDetailsById(Long gameId) {
         ReponseGameDetailsDTO gameDetails = null;
 
-        // SQL Principal (Dados do Jogo + Imagens)
         String sql = "SELECT g.game_id, g.name, g.price, g.description, g.characteristics, "
                 + "g.createdAt, g.hard_drive_space, g.graphics_card, g.memory, "
                 + "g.operating_system, g.processor, "
                 + "m_cover.url AS url_cover, m_icon.url AS url_icon "
                 + "FROM games g "
-                + "LEFT JOIN medias m_cover ON g.game_id = m_cover.game_id AND m_cover.media_type = 'cover' "
-                + "LEFT JOIN medias m_icon ON g.game_id = m_icon.game_id AND m_icon.media_type = 'icon' "
+                + "LEFT JOIN media m_cover ON g.game_id = m_cover.game_id AND m_cover.media_type = 'COVER' "
+                + "LEFT JOIN media m_icon ON g.game_id = m_icon.game_id AND m_icon.media_type = 'ICON' "
                 + "WHERE g.game_id = ?";
 
         try {
@@ -281,7 +311,6 @@ public class GameDAO {
 
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
                     if (resultSet.next()) {
-                        // 1. Coleta dados básicos
                         Long id = resultSet.getLong("game_id");
                         String name = resultSet.getString("name");
                         BigDecimal price = resultSet.getBigDecimal("price");
@@ -297,13 +326,25 @@ public class GameDAO {
                         String urlIcon = resultSet.getString("url_icon");
 
                         List<Long> categoryIds = new ArrayList<>();
-                        String sqlCategories = "SELECT categorys_id FROM categorys_games WHERE game_id = ?";
+                        String sqlCategories = "SELECT category_id FROM categories_games WHERE game_id = ?";
 
                         try (PreparedStatement psCats = connection.prepareStatement(sqlCategories)) {
                             psCats.setLong(1, id);
                             try (ResultSet rsCats = psCats.executeQuery()) {
                                 while (rsCats.next()) {
-                                    categoryIds.add(rsCats.getLong("categorys_id"));
+                                    categoryIds.add(rsCats.getLong("category_id"));
+                                }
+                            }
+                        }
+
+                        List<String> urlsMedia = new ArrayList<>();
+                        String sqlScreenshot = "SELECT url FROM media WHERE game_id = ? and media_type='SCREENSHOT'";
+
+                        try (PreparedStatement psMedia = connection.prepareStatement(sqlScreenshot)) {
+                            psMedia.setLong(1, id);
+                            try (ResultSet rsMedia = psMedia.executeQuery()) {
+                                while (rsMedia.next()) {
+                                    urlsMedia.add(rsMedia.getString("url"));
                                 }
                             }
                         }
@@ -322,7 +363,8 @@ public class GameDAO {
                                 memory,
                                 operatingSystem,
                                 processor,
-                                categoryIds
+                                categoryIds,
+                                urlsMedia
                         );
                     }
                 }

@@ -1,6 +1,6 @@
 package dev.smd.estela.backend.model;
 
-import dev.smd.estela.backend.dto.UpdateUserDTO;
+import dev.smd.estela.backend.dto.user.UpdateUserDTO;
 import java.io.Serializable;
 
 public class User implements Serializable {

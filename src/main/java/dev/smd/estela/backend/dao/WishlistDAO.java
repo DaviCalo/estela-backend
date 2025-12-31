@@ -4,7 +4,7 @@ import static dev.smd.estela.backend.config.Config.DB_DRIVER;
 import static dev.smd.estela.backend.config.Config.DB_PASSWORD;
 import static dev.smd.estela.backend.config.Config.DB_URL;
 import static dev.smd.estela.backend.config.Config.DB_USER;
-import dev.smd.estela.backend.model.Wishlist; 
+import dev.smd.estela.backend.model.Wishlist;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -31,14 +31,14 @@ public class WishlistDAO {
         return isSuccess;
     }
 
-    public boolean delete(Long userId, Long gameId) {
+    public boolean delete(Wishlist item) {
         boolean isSuccess = false;
         try {
             Class.forName(DB_DRIVER);
             Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
             PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM wishlist WHERE user_id = ? AND game_id = ?");
-            preparedStatement.setLong(1, userId);
-            preparedStatement.setLong(2, gameId);
+            preparedStatement.setLong(1, item.getUserId());
+            preparedStatement.setLong(2, item.getGameId());
             isSuccess = (preparedStatement.executeUpdate() == 1);
             preparedStatement.close();
             connection.close();

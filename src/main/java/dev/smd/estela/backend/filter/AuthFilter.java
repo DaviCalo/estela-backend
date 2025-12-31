@@ -15,57 +15,61 @@ import jakarta.servlet.http.HttpSession;
 
 public class AuthFilter implements Filter {
 
-        private static final List<String> PUBLIC_ROUTES = Arrays.asList(
-                "/api/login",
-                "/api/register",
-                "/api/game/cover/*",
-                "/api/games"
-        );
-        
-        @Override
-        public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
-                    throws IOException, ServletException {
+    private static final List<String> PUBLIC_ROUTES = Arrays.asList(
+            "/api/login",
+            "/api/register",
+            "/api/game/*",
+            "/api/games/*",
+            "/api/checkout",
+            "/api/my-games",
+            "/api/logout",
+            "/api/user"
+    );
 
-                HttpServletRequest request = (HttpServletRequest) req;
-                HttpServletResponse response = (HttpServletResponse) res;
+    @Override
+    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
+            throws IOException, ServletException {
 
-                String path = request.getRequestURI().substring(request.getContextPath().length());
-   
-                if (path.length() > 1 && path.endsWith("/")) {
-                    path = path.substring(0, path.length() - 1);
-                }
+        HttpServletRequest request = (HttpServletRequest) req;
+        HttpServletResponse response = (HttpServletResponse) res;
 
-                if (isPublicRoute(path)) {
-                        chain.doFilter(request, response);
-                } else {
-                        HttpSession session = request.getSession(false);
-                        if (session == null || session.getAttribute("user") == null) {
-                                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                                response.setContentType("application/json");
-                                response.setCharacterEncoding("UTF-8");
-                                String jsonResponse = "{\"status\": 401, \"message\": \"Sessão inválida ou expirada. Acesso requer autenticação.\"}";
-                                response.getWriter().write(jsonResponse);
-                        } else {
-                                chain.doFilter(request, response);
-                        }
-                }
-        }
-        
-        @Override
-        public void destroy() {
+        String path = request.getRequestURI().substring(request.getContextPath().length());
+
+        if (path.length() > 1 && path.endsWith("/")) {
+            path = path.substring(0, path.length() - 1);
         }
 
-        private boolean isPublicRoute(String path) {
-            for (String publicRoute : PUBLIC_ROUTES) {
-                if (publicRoute.endsWith("/*")) {
-                    String prefix = publicRoute.substring(0, publicRoute.length() - 2); 
-                    if (path.startsWith(prefix)) {
-                        return true;
-                    }
-                } else if (publicRoute.equals(path)) {
+        if (isPublicRoute(path)) {
+            chain.doFilter(request, response);
+        } else {
+            HttpSession session = request.getSession(false);
+            if (session == null || session.getAttribute("user") == null) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                String jsonResponse = "{\"status\": 401, \"message\": \"Sessão inválida ou expirada. Acesso requer autenticação.\"}";
+                response.getWriter().write(jsonResponse);
+            } else {
+                chain.doFilter(request, response);
+            }
+        }
+    }
+
+    @Override
+    public void destroy() {
+    }
+
+    private boolean isPublicRoute(String path) {
+        for (String publicRoute : PUBLIC_ROUTES) {
+            if (publicRoute.endsWith("/*")) {
+                String prefix = publicRoute.substring(0, publicRoute.length() - 2);
+                if (path.startsWith(prefix)) {
                     return true;
                 }
+            } else if (publicRoute.equals(path)) {
+                return true;
             }
-            return false;
         }
+        return false;
+    }
 }

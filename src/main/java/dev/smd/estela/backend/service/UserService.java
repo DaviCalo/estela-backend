@@ -2,7 +2,7 @@ package dev.smd.estela.backend.service;
 
 import static dev.smd.estela.backend.config.Config.PATH_FILES_USERS;
 import dev.smd.estela.backend.dao.UserDAO;
-import dev.smd.estela.backend.dto.UpdateUserDTO;
+import dev.smd.estela.backend.dto.user.UpdateUserDTO;
 import dev.smd.estela.backend.model.User;
 import java.io.File;
 

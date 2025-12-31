@@ -18,10 +18,10 @@ public class CategoryDAO {
             Class.forName(DB_DRIVER);
             Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT categorys_id, name FROM categorys");
+            ResultSet resultSet = statement.executeQuery("SELECT category_id, name FROM categories");
             while (resultSet.next()) {
                 Category category = new Category();
-                category.setCategoryId(resultSet.getLong("categorys_id"));
+                category.setCategoryId(resultSet.getLong("category_id"));
                 category.setName(resultSet.getString("name"));
                 resultado.add(category);
             }
@@ -41,7 +41,7 @@ public class CategoryDAO {
             Class.forName(DB_DRIVER);
             Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
 
-            String sql = "UPDATE categorys SET name = ? WHERE categorys_id = ?";
+            String sql = "UPDATE categories SET name = ? WHERE category_id = ?";
 
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
@@ -65,12 +65,12 @@ public class CategoryDAO {
         try {
             Class.forName(DB_DRIVER);
             Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT categorys_id, name FROM categorys WHERE categorys_id = ?");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT category_id, name FROM categories WHERE category_id = ?");
             preparedStatement.setLong(1, categoryId);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 category = new Category();
-                category.setCategoryId(resultSet.getLong("categorys_id"));
+                category.setCategoryId(resultSet.getLong("category_id"));
                 category.setName(resultSet.getString("name"));
             }
             resultSet.close();
@@ -88,7 +88,7 @@ public class CategoryDAO {
         try {
             Class.forName(DB_DRIVER);
             Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO categorys (name) VALUES (?)");
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO categories (name) VALUES (?)");
             preparedStatement.setString(1, newCategory.getName());
 
             isSuccess = (preparedStatement.executeUpdate() == 1);
@@ -106,7 +106,7 @@ public class CategoryDAO {
         try {
             Class.forName(DB_DRIVER);
             Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM categorys WHERE categorys_id = ?");
+            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM categories WHERE category_id = ?");
             preparedStatement.setLong(1, categoryId);
             isSuccess = (preparedStatement.executeUpdate() == 1);
             preparedStatement.close();

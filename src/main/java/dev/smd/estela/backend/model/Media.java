@@ -4,57 +4,56 @@ import java.io.Serializable;
 
 public class Media implements Serializable {
 
-        private Long id;
-        private String url;
-        private String mediaType;
-        private Long gameId;
+    private Long id;
+    private String url;
+    private MediaType mediaType;
+    private Long gameId;
 
-        public Media() {
-        }
+    public Media() {
+    }
 
-        public Media(Long id, String url, String mediaType, Long gameId) {
-            this.id = id;
-            this.url = url;
-            this.mediaType = mediaType;
-            this.gameId = gameId;
-        }
-        
-        public Media(String url, String mediaType, Long gameId) {
-            this.id = id;
-            this.url = url;
-            this.mediaType = mediaType;
-            this.gameId = gameId;
-        }
+    public Media(Long id, String url, MediaType mediaType, Long gameId) {
+        this.id = id;
+        this.url = url;
+        this.mediaType = mediaType;
+        this.gameId = gameId;
+    }
 
-        public Long getId() {
-            return id;
-        }
+    public Media(String url, MediaType mediaType, Long gameId) {
+        this.url = url;
+        this.mediaType = mediaType;
+        this.gameId = gameId;
+    }
 
-        public void setId(Long id) {
-            this.id = id;
-        }
+    public Long getId() {
+        return id;
+    }
 
-        public String getUrl() {
-            return url;
-        }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-        public void setUrl(String url) {
-            this.url = url;
-        }
+    public String getUrl() {
+        return url;
+    }
 
-        public String getMediaType() {
-            return mediaType;
-        }
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
-        public void setMediaType(String mediaType) {
-            this.mediaType = mediaType;
-        }
+    public MediaType getMediaType() {
+        return mediaType;
+    }
 
-        public Long getGameId() {
-            return gameId;
-        }
+    public void setMediaType(MediaType mediaType) {
+        this.mediaType = mediaType;
+    }
 
-        public void setGameId(Long gameId) {
-            this.gameId = gameId;
-        }
+    public Long getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(Long gameId) {
+        this.gameId = gameId;
+    }
 }
